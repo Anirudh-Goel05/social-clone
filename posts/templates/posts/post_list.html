@@ -1,0 +1,13 @@
+{% extends 'posts/posts_base.html' %}
+{% block body_block %}
+  <h1>Posts</h1>
+  <ul>
+    {% for post in posts %}
+    <li>
+      <p>{{post.text}}</p>
+      <p>Written by: {{post.user.username}}</p>
+      <p>Written at: {{post.created_at}}</p>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

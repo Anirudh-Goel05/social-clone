@@ -1,0 +1,8 @@
+{% extends 'groups/group_base.html' %}
+{% block body_block%}
+  <form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" name="" value="Create-Group">
+  </form>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'groups/group_base.html' %}
+{% block body_block %}
+  <h1>{{group.name}}</h1>
+  <h3>Total Members: {{member_count}} </h3>
+  <h5>{{group.description}}</h5>
+  {% if user.is_authenticated %}
+  <a href="{% url 'group:join_group' slug=group.slug %}">Join this group</a>
+  <a href="{% url 'group:leave_group' slug=group.slug %}">Leave this group</a>
+  {% endif %}
+{% endblock %}

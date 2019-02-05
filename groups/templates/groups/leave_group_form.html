@@ -1,0 +1,9 @@
+{% extends 'groups/group_base.html'  %}
+{% block body_block %}
+  <h2>Are you sure you want to leave this group</h2>
+  <form method="post">
+    {% csrf_token %}
+    <input type="submit" name="" value="Yes">
+    <li><a href="{% url 'group:group_detail' slug=slug %}">Go back</a></li>
+  </form>
+{% endblock %}
