@@ -35,10 +35,7 @@ class GroupDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        x=self.kwargs['slug']
-        print(x)
-        print(type(x))
-
+        
         cur_group = get_object_or_404(Group, slug=self.kwargs['slug'])
         context['member_count'] =  cur_group.member.count() #Get count of group members
         return context
@@ -46,11 +43,16 @@ class GroupDetailView(DetailView):
 @login_required
 def add_group_member(request,slug):
     if request.method == 'POST':
+        print('Enterd POST block')
         group = get_object_or_404(Group, slug=slug)
         user_already_in_group = GroupMember.objects.filter(user=request.user,group=group)
         if user_already_in_group:
             return HttpResponse('You are already in this group')
         GroupMember.objects.create(group=group,user=request.user)
+        valuenext= request.GET.get('next')
+        print(valuenext)
+        if valuenext:
+            return HttpResponseRedirect(valuenext)
         return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))
     else:
         return render(request,'groups/join_group_form.html',context={'slug':slug})
@@ -88,5 +90,10 @@ class PostCreateView(LoginRequiredMixin,CreateView):
         # do something with self.object
         slug = self.kwargs['slug']
         group = get_object_or_404(Group, slug=slug)
-        Post.objects.create(group=group,user=self.request.user,slug=slug,text=self.object.text)
-        return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))
+        user = self.request.user
+        is_in_group = GroupMember.objects.filter(group=group,user=user)
+        if is_in_group:
+            Post.objects.create(group=group,user=user,slug=slug,text=self.object.text)
+            return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))
+        else:
+            return HttpResponseRedirect(reverse('group:join_group',kwargs={'slug':slug}))
