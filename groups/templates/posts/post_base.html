@@ -19,6 +19,7 @@
       <li>
         <a href="{%  url 'account:sign_up' %}">Sign-Up</a>
       </li>
+
       <li>
         <a href="{% url 'account:sign_in'  %}">Sign In</a>
       </li>
@@ -30,18 +31,13 @@
       <li>
         <a href="{% url 'group:group_list' %}">Groups</a>
       </li>
-      <li>
-        <a href="{% url 'account:home_page' %}">Index</a>
-      </li>
 
       <li>
         <a href="{% url 'group:create_group' %}">Create-Group</a>
       </li>
-
-      </nav>
       
-      {% block body_block %}
-      {% endblock %}
-
+    </nav>
+    {% block body_block %}
+    {% endblock %}
   </body>
 </html>

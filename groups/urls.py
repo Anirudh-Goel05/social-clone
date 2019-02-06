@@ -1,5 +1,5 @@
 from django.urls import path,include
-from . views import CreateGroupView,GroupListView,GroupDetailView,add_group_member,remove_group_member
+from . views import CreateGroupView,GroupListView,GroupDetailView,add_group_member,remove_group_member,PostListView,PostCreateView
 app_name = 'group'
 
 urlpatterns = [
@@ -8,4 +8,7 @@ urlpatterns = [
     path('<slug:slug>/',GroupDetailView.as_view(),name='group_detail'),
     path('<slug:slug>/join/',add_group_member,name='join_group'),
     path('<slug:slug>/leave/',remove_group_member,name='leave_group'),
+    path('<slug:slug>/posts/',PostListView.as_view(),name='posts_list'),
+    path('<slug:slug>/post_create/',PostCreateView.as_view(),name='posts_create'),
+    
 ]

@@ -1,0 +1,18 @@
+{%  extends 'posts/post_base.html'%}
+
+{% block body_block %}
+  <h1>Posts</h1>
+  <ul>
+  {% if posts %}
+  {% for post in posts %}
+  <li>
+    <p>{{post.text}}</p>
+    <p><small>Added by:{{post.user.username}}</small></p>
+    <p><small>Added on:{{post.created_at}}</small></p>
+  </li>
+  {% endfor %}
+  </ul>
+  {% else %}
+  <h2>No Posts Yet !!! </h2>
+  {% endif %}
+{% endblock %}

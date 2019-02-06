@@ -1,0 +1,10 @@
+{% extends 'posts/post_base.html' %}
+{% block body_block %}
+  <h1>Create a new post in this Group</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" name="" value="Add-Post">
+  </form>
+
+{% endblock %}

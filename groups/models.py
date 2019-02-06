@@ -30,6 +30,21 @@ class GroupMember(models.Model):
 
     class Meta:
         unique_together = ('group','user',)
-
+        
     def __str__(self):
         return self.user.username
+
+
+class Post(models.Model):
+    user = models.ForeignKey(User,related_name='posts',on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now=True)
+    text = models.TextField()
+    group = models.ForeignKey(Group,related_name='posts',on_delete=models.CASCADE)
+    slug = models.SlugField(allow_unicode=True,default='game_of_thrones')
+
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ('user','text')
+
+    def __str__(self):
+        return self.text

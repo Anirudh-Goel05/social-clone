@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Group,GroupMember
+from .models import Group,GroupMember,Post
 from django.views.generic.edit import CreateView,FormView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -36,6 +36,10 @@ class GroupDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        x=self.kwargs['slug']
+        print(x)
+        print(type(x))
+
         cur_group = get_object_or_404(Group, slug=self.kwargs['slug'])
         context['member_count'] =  cur_group.member.count() #Get count of group members
         return context
@@ -63,3 +67,27 @@ def remove_group_member(request,slug):
         return HttpResponse('You are not in this group')
     else:
         return render(request,'groups/leave_group_form.html',context={'slug':slug})
+
+# *********************************************************************
+# *********************************************************************
+class PostListView(ListView):
+    template_name = 'posts/post_list.html'
+    model = Post
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        slug = self.kwargs['slug']
+        return Post.objects.filter(slug=slug)
+
+class PostCreateView(LoginRequiredMixin,CreateView):
+    template_name = 'posts/create_post.html'
+    model = Post
+    fields = ['text',]
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        # do something with self.object
+        slug = self.kwargs['slug']
+        group = get_object_or_404(Group, slug=slug)
+        Post.objects.create(group=group,user=self.request.user,slug=slug,text=self.object.text)
+        return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))

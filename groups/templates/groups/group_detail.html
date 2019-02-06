@@ -7,4 +7,7 @@
   <a href="{% url 'group:join_group' slug=group.slug %}">Join this group</a>
   <a href="{% url 'group:leave_group' slug=group.slug %}">Leave this group</a>
   {% endif %}
+  <a href="{% url 'group:posts_list' slug=group.slug%}">Posts</a>
+  <a href="{% url 'group:posts_create' slug=group.slug%}">Create Post</a>
+
 {% endblock %}
