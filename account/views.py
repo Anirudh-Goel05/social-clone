@@ -7,7 +7,10 @@ from django.contrib.auth import authenticate, login,logout
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
+from groups.models import Group,GroupMember,Post
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.list import ListView
 
 # Create your views here.
 
@@ -52,6 +55,23 @@ class SignInView(FormView):
             return HttpResponseRedirect(reverse('account:sign_in'))
         return super().form_valid(form)
 
+@login_required
 def sign_out_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('home_page'))
+
+class UserPostListView(LoginRequiredMixin,ListView):
+    template_name = 'account/post_list.html'
+    model = Post
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        user = self.request.user
+        groups = GroupMember.objects.filter(user=user).values('group')
+        posts = Post.objects.filter(group=0)
+        for group in groups:
+            group_id = group['group']
+            post = Post.objects.filter(group=group_id).order_by('-created_at').values()
+            posts = posts|post
+        posts = posts.order_by('-created_at')
+        return posts

@@ -30,7 +30,7 @@ class GroupMember(models.Model):
 
     class Meta:
         unique_together = ('group','user',)
-        
+
     def __str__(self):
         return self.user.username
 
@@ -45,6 +45,6 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created_at']
         unique_together = ('user','text')
-
+        
     def __str__(self):
         return self.text

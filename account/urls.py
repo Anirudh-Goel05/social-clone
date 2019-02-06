@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import SignUpView,HomePageView,SignInView,sign_out_view
+from .views import SignUpView,HomePageView,SignInView,sign_out_view,UserPostListView
 
 app_name = 'account'
 urlpatterns = [
@@ -7,4 +7,5 @@ urlpatterns = [
     path('',HomePageView.as_view(),name='home_page'),
     path('sign_in/',SignInView.as_view(),name='sign_in'),
     path('sign_out/',sign_out_view,name='sign_out'),
+    path('user/',UserPostListView.as_view(),name='user_posts'),
 ]

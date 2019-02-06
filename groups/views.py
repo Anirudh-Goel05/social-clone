@@ -23,7 +23,6 @@ class CreateGroupView(LoginRequiredMixin,CreateView):
         GroupMember.objects.create(group=self.object,user=self.request.user)
         return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':self.object.slug}))
 
-
 class GroupListView(ListView):
     template_name = 'groups/group_list.html'
     model = Group
