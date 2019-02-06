@@ -22,7 +22,7 @@ class HomePageView(TemplateView):
 class SignUpView(FormView):
     template_name = 'account/profile_create_form.html'
     form_class = UserProfileForm
-    
+
 
     def form_valid(self,form):
         user = form.save(commit=False)
@@ -42,6 +42,10 @@ class SignInView(FormView):
         user = authenticate(self.request, username=username, password=password)
         if user is not None:
             login(self.request,user)
+            # valuenext= self.request.POST.get('next')
+            valuenext= self.request.GET.get('next')
+            if valuenext:
+                return HttpResponseRedirect(valuenext)
             return HttpResponseRedirect(reverse('home_page'))
         else:
             messages.error(self.request,'username or password not correct')
