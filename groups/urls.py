@@ -2,7 +2,7 @@ from django.urls import path,include
 from . views import CreateGroupView,GroupListView,GroupDetailView,add_group_member,remove_group_member
 app_name = 'group'
 
-urlpatterns =[
+urlpatterns = [
     path('create_group/',CreateGroupView.as_view(),name='create_group'),
     path('',GroupListView.as_view(),name='group_list'),
     path('<slug:slug>/',GroupDetailView.as_view(),name='group_detail'),

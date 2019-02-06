@@ -17,7 +17,7 @@ class Group(models.Model):
     def save(self,*args,**kwargs):
         self.slug=slugify(self.name)
         super().save(*args,**kwargs)
-        
+
     class Meta:
         unique_together = ['slug']
         # ordering = ['-members']

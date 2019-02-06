@@ -8,11 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseRedirect
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 User = get_user_model()
 
-class CreateGroupView(CreateView):
+class CreateGroupView(LoginRequiredMixin,CreateView):
     template_name = 'groups/create_group.html'
     model = Group
     fields = ['name','description',]
@@ -27,7 +27,6 @@ class CreateGroupView(CreateView):
 class GroupListView(ListView):
     template_name = 'groups/group_list.html'
     model = Group
-    paginate_by = 10
     context_object_name = 'groups'
 
 class GroupDetailView(DetailView):

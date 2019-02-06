@@ -13,10 +13,7 @@
           <li>
             <a href="{% url 'account:sign_out'  %}">Sign Out</a>
           </li>
-          
-          <li>
-            <a href="{% url 'group:group_list' %}">Groups</a>
-          </li>
+
 
           {% else %}
           <li>
@@ -31,6 +28,9 @@
           </li>
           {% endif %}
 
+          <li>
+            <a href="{% url 'group:group_list' %}">Groups</a>
+          </li>
 
       </nav>
       {% block body_block %}

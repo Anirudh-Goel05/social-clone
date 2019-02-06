@@ -53,6 +53,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'socialclone.urls'
+LOGIN_URL = 'account:sign_in'
+LOGIN_REDIRECT_URL='account:sign_in'
 
 TEMPLATES = [
     {
