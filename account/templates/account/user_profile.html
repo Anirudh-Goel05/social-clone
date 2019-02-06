@@ -1,19 +1,18 @@
 {% extends 'account/base.html' %}
-
 {% block body_block %}
-  <h1>Posts in Groups you follow</h1>
-  <ul>
+  <h1>Welcome to {{user.username}}'s Page</h1>
   {% if posts %}
+
+  <h2>Posts Written by them are {{total_posts}}:</h2>
   {% for post in posts %}
   <li>
     <h3> <a href="{% url 'group:group_detail' slug=post.group.slug %}">{{post.group.name}}</a></h3>
     <p>{{post.text}}</p>
-    <p><small>Added by:{{post.user.username}}</small></p>
     <p><small>Added on:{{post.created_at}}</small></p>
   </li>
   {% endfor %}
   </ul>
   {% else %}
-  <h2> No Posts in any group you follow </h2>
+  <h2> No Posts by this User </h2>
   {% endif %}
 {% endblock %}

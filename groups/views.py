@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 # Create your views here.
 User = get_user_model()
 
@@ -35,7 +35,7 @@ class GroupDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         cur_group = get_object_or_404(Group, slug=self.kwargs['slug'])
         context['member_count'] =  cur_group.member.count() #Get count of group members
         return context
@@ -80,10 +80,17 @@ class PostListView(ListView):
         slug = self.kwargs['slug']
         return Post.objects.filter(slug=slug)
 
-class PostCreateView(LoginRequiredMixin,CreateView):
+class PostCreateView(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     template_name = 'posts/create_post.html'
     model = Post
     fields = ['text',]
+
+    def test_func(self):
+        user = self.request.user
+        slug = self.kwargs['slug']
+        group = get_object_or_404(Group, slug=slug)
+        is_in_group = GroupMember.objects.filter(group=group,user=user)
+        return is_in_group
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -91,9 +98,5 @@ class PostCreateView(LoginRequiredMixin,CreateView):
         slug = self.kwargs['slug']
         group = get_object_or_404(Group, slug=slug)
         user = self.request.user
-        is_in_group = GroupMember.objects.filter(group=group,user=user)
-        if is_in_group:
-            Post.objects.create(group=group,user=user,slug=slug,text=self.object.text)
-            return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))
-        else:
-            return HttpResponseRedirect(reverse('group:join_group',kwargs={'slug':slug}))
+        Post.objects.create(group=group,user=user,slug=slug,text=self.object.text)
+        return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))

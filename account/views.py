@@ -11,7 +11,11 @@ from django.contrib.auth.decorators import login_required
 from groups.models import Group,GroupMember,Post
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 
+
+User = get_user_model()
 # Create your views here.
 
 class HomePageView(TemplateView):
@@ -75,3 +79,40 @@ class UserPostListView(LoginRequiredMixin,ListView):
             posts = posts|post
         posts = posts.order_by('-created_at')
         return posts
+
+class UserProfileView(LoginRequiredMixin,ListView):
+    template_name = 'account/user_profile.html'
+    model = Post
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        user = get_object_or_404(User,id=pk)
+        return Post.objects.filter(user=user).order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        user = get_object_or_404(User,id=pk)
+        total_posts = Post.objects.filter(user=user).count()
+        context['user'] = user
+        context['total_posts'] = total_posts
+        return context
+
+class UserListView(ListView):
+    template_name = 'account/user_list.html'
+    model = User
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        return User.objects.all().order_by('username')
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        total_users = User.objects.count()
+        context['total_users'] = total_users
+        return context
+
+@login_required
+def user_self_profile(request):
+    user = request.user
+    return HttpResponseRedirect(reverse('account:user_profile',kwargs={'pk':user.id}))

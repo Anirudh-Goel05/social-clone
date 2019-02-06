@@ -16,6 +16,9 @@
           <li>
             <a href="{% url 'account:user_posts' %}">Your Groups</a>
           </li>
+          <li>
+            <a href="{% url 'account:user_self_profile' %}">Your Profile</a>
+          </li>
 
           {% else %}
           <li>
@@ -32,6 +35,9 @@
 
           <li>
             <a href="{% url 'group:group_list' %}">Groups</a>
+          </li>
+          <li>
+            <a href="{% url 'account:user_list' %}">List of Users</a>
           </li>
 
       </nav>
