@@ -126,7 +126,7 @@ def upvote(request,pk):
     print('.................................................')
     if Upvoter.objects.filter(post=post,user=user).exists():
         return HttpResponseRedirect(reverse('account:user_posts'))
-        
+
     print('Upvoting the post................................')
     upvoter = Upvoter(post=post,user=user)
     upvoter.save()
