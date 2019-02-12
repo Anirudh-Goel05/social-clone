@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from groups.models import Group,GroupMember,Post,Upvoter
+from groups.models import Group,GroupMember,Post,Upvoter,Downvoter
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
@@ -136,7 +136,14 @@ def upvote(request,pk):
 
 @login_required
 def downvote(request,pk):
-    post = Post.objects.filter(pk=pk)
+    post = Post.objects.filter(pk=pk)[0]
     user = request.user
+    if Downvoter.objects.filter(post=post,user=user).exists():
+        return HttpResponseRedirect(reverse('account:user_posts'))
+        
+    print('Downvoting the post................................')
+    downvoter = Downvoter(post=post,user=user)
+    downvoter.save()
     post.downvotes += 1
+    post.save()
     return HttpResponseRedirect(reverse('account:user_posts'))

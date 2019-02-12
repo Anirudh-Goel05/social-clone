@@ -60,3 +60,13 @@ class Upvoter(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Downvoter(models.Model):
+    user = models.ForeignKey(User,related_name='downvoter',on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,related_name='downvote',on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('post','user',)
+        
+    def __str__(self):
+        return self.user.username
