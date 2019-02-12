@@ -41,10 +41,22 @@ class Post(models.Model):
     text = models.TextField()
     group = models.ForeignKey(Group,related_name='posts',on_delete=models.CASCADE)
     slug = models.SlugField(allow_unicode=True,default='game_of_thrones')
+    upvotes = models.IntegerField(default=0)
+    downvotes = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-created_at']
         unique_together = ('user','text')
-        
+
     def __str__(self):
         return self.text
+
+class Upvoter(models.Model):
+    user = models.ForeignKey(User,related_name='upvoter',on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,related_name='upvote',on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('post','user',)
+
+    def __str__(self):
+        return self.user.username

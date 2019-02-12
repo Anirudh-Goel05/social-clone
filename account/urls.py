@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import SignUpView,HomePageView,SignInView,sign_out_view,UserPostListView,UserProfileView,UserListView,user_self_profile
+from .views import SignUpView,HomePageView,SignInView,sign_out_view,UserPostListView,UserProfileView,UserListView,user_self_profile,upvote,downvote
 
 app_name = 'account'
 urlpatterns = [
@@ -11,4 +11,6 @@ urlpatterns = [
     path('user/<int:pk>/',UserProfileView.as_view(),name='user_profile'),
     path('users_all/',UserListView.as_view(),name='user_list'),
     path('user/self/',user_self_profile,name='user_self_profile'),
+    path('user/<int:pk>/upvote',upvote,name='post_upvote'),
+    path('user/<int:pk>/downvote',downvote,name='post_downvote'),
 ]

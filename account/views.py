@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from groups.models import Group,GroupMember,Post
+from groups.models import Group,GroupMember,Post,Upvoter
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
@@ -116,3 +116,27 @@ class UserListView(ListView):
 def user_self_profile(request):
     user = request.user
     return HttpResponseRedirect(reverse('account:user_profile',kwargs={'pk':user.id}))
+
+@login_required
+def upvote(request,pk):
+    post = Post.objects.filter(pk=pk)[0]
+    user = request.user
+    print(post)
+    print(user)
+    print('.................................................')
+    if Upvoter.objects.filter(post=post,user=user).exists():
+        return HttpResponseRedirect(reverse('account:user_posts'))
+        
+    print('Upvoting the post................................')
+    upvoter = Upvoter(post=post,user=user)
+    upvoter.save()
+    post.upvotes += 1
+    post.save()
+    return HttpResponseRedirect(reverse('account:user_posts'))
+
+@login_required
+def downvote(request,pk):
+    post = Post.objects.filter(pk=pk)
+    user = request.user
+    post.downvotes += 1
+    return HttpResponseRedirect(reverse('account:user_posts'))

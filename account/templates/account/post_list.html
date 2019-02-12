@@ -10,6 +10,7 @@
     <p>{{post.text}}</p>
     <p><small>Added by:{{post.user.username}}</small></p>
     <p><small>Added on:{{post.created_at}}</small></p>
+    <p><a href="{% url 'account:post_upvote' pk=post.pk %}">Upvotes:{{post.upvotes}}</a><small>Downvotes:{{post.downvotes}}</small></p>
   </li>
   {% endfor %}
   </ul>

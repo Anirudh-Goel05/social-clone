@@ -100,3 +100,5 @@ class PostCreateView(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         user = self.request.user
         Post.objects.create(group=group,user=user,slug=slug,text=self.object.text)
         return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))
+
+    pass    

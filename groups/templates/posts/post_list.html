@@ -9,6 +9,7 @@
     <p>{{post.text}}</p>
     <p><small>Added by:{{post.user.username}}</small></p>
     <p><small>Added on:{{post.created_at}}</small></p>
+    <p><small>Upvotes: {{post.upvotes}}   Downvotes: {{post.downvotes}} </small></p>
   </li>
   {% endfor %}
   </ul>
