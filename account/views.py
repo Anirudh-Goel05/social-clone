@@ -95,8 +95,10 @@ class UserProfileView(LoginRequiredMixin,ListView):
         pk = self.kwargs['pk']
         user = get_object_or_404(User,id=pk)
         total_posts = Post.objects.filter(user=user).count()
+        total_groups = GroupMember.objects.filter(user=user).count()
         context['user'] = user
         context['total_posts'] = total_posts
+        context['total_groups'] = total_groups
         return context
 
 class UserListView(ListView):
@@ -125,6 +127,9 @@ def upvote(request,pk):
     print(user)
     print('.................................................')
     if Upvoter.objects.filter(post=post,user=user).exists():
+        Upvoter.objects.filter(post=post,user=user).delete()
+        post.upvotes -= 1
+        post.save()
         return HttpResponseRedirect(reverse('account:user_posts'))
 
     print('Upvoting the post................................')
@@ -139,8 +144,11 @@ def downvote(request,pk):
     post = Post.objects.filter(pk=pk)[0]
     user = request.user
     if Downvoter.objects.filter(post=post,user=user).exists():
+        Downvoter.objects.filter(post=post,user=user).delete()
+        post.downvotes -= 1
+        post.save()
         return HttpResponseRedirect(reverse('account:user_posts'))
-        
+
     print('Downvoting the post................................')
     downvoter = Downvoter(post=post,user=user)
     downvoter.save()
