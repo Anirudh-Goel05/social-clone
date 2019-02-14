@@ -1,18 +1,24 @@
 {%  extends 'posts/post_base.html'%}
 
 {% block body_block %}
-  <h1>Posts</h1>
-  <ul>
+  <div class="jumbotron text-center">
+    <h1>Posts</h1>
+  </div>
   {% if posts %}
   {% for post in posts %}
-  <li>
-    <p>{{post.text}}</p>
-    <p><small>Added by:{{post.user.username}}</small></p>
-    <p><small>Added on:{{post.created_at}}</small></p>
-    <p><small>Upvotes: {{post.upvotes}}   Downvotes: {{post.downvotes}} </small></p>
-  </li>
+  <div class="panel panel-default">
+    <div class="panel-body">
+
+        <p>{{post.text}}</p>
+        <div class="panel-footer">
+          <p><small>Added by: <b>{{post.user.username}}</b></small></p>
+          <p><small>Added on: <b>{{post.created_at}}</b></small></p>
+          <p><small>Upvotes:  <b>{{post.upvotes}}</b>   Downvotes: <b>{{post.downvotes}} </b></small></p>
+        </div>
+    </div>
+  </div>
   {% endfor %}
-  </ul>
+
   {% else %}
   <h2>No Posts Yet !!! </h2>
   {% endif %}

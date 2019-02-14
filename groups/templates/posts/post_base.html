@@ -2,42 +2,58 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Posts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
   </head>
   <body>
-    <nav>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'account:home_page' %}">Movies-Fandom</a>
+        </div>
+
       {% if user.is_authenticated %}
+      <ul class="nav navbar-nav navbar-right" >
+
         <li>
         <a href="{% url 'account:sign_out'  %}">Sign Out</a>
       </li>
-
+    </ul>
       {% else %}
+      <ul class="nav navbar-nav navbar-right" >
+
       <li>
         <a href="{%  url 'admin:index' %}">Admin</a>
       </li>
 
       <li>
-        <a href="{%  url 'account:sign_up' %}">Sign-Up</a>
+        <a href="{%  url 'account:sign_up' %}"><span class="glyphicon glyphicon-user"></span> Sign-Up</a>
       </li>
 
       <li>
-        <a href="{% url 'account:sign_in'  %}">Sign In</a>
+        <a href="{% url 'account:sign_in'  %}"><span class="glyphicon glyphicon-log-in"></span> Sign In</a>
       </li>
+    </ul>
       {% endif %}
-      <li>
-        <a href="{% url 'account:home_page' %}">Index</a>
-      </li>
+      <ul class="nav navbar-nav">
 
-      <li>
-        <a href="{% url 'group:group_list' %}">Groups</a>
-      </li>
+        <li>
+          <a href="{% url 'group:group_list' %}">Groups</a>
+        </li>
 
-      <li>
-        <a href="{% url 'group:create_group' %}">Create-Group</a>
-      </li>
-      
+        <li>
+          <a href="{% url 'group:create_group' %}">Create-Group</a>
+        </li>
+      </ul>
+    </div>
     </nav>
+    <div class="container">
+
     {% block body_block %}
     {% endblock %}
+    </div>
+
   </body>
 </html>

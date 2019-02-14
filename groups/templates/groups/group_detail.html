@@ -1,13 +1,39 @@
 {% extends 'groups/group_base.html' %}
 {% block body_block %}
-  <h1>{{group.name}}</h1>
-  <h3>Total Members: {{member_count}} </h3>
-  <h5>{{group.description}}</h5>
-  {% if user.is_authenticated %}
-  <a href="{% url 'group:join_group' slug=group.slug %}">Join this group</a>
-  <a href="{% url 'group:leave_group' slug=group.slug %}">Leave this group</a>
-  {% endif %}
-  <a href="{% url 'group:posts_list' slug=group.slug%}">Posts</a>
-  <a href="{% url 'group:posts_create' slug=group.slug%}">Create Post</a>
+  <div class="jumbotron text-center">
+    <h1>{{group.name}}</h1>
+    <h3>Total Members: {{member_count}} </h3> <br>
+    <h4>{{group.description}}</h4>
+  </div>
+    {% if user.is_authenticated %}
+
+    <div class="row">
+      <div class="col-lg-6 text-center">
+        <h3>
+          <a href="{% url 'group:join_group' slug=group.slug %}">Join this group</a>
+        </h3>
+      </div>
+      <div class="col-sm-6 text-center">
+        <h3>
+          <a href="{% url 'group:leave_group' slug=group.slug %}">Leave this group</a>
+        </h3>
+      </div>
+    </div>
+      {% endif %}
+      <div class="row">
+
+        <div class="col-sm-6 text-center">
+          <h3>
+            <a href="{% url 'group:posts_list' slug=group.slug%}">Posts</a>
+          </h3>
+        </div>
+        <div class="col-sm-6 text-center">
+          <h3>
+          <a href="{% url 'group:posts_create' slug=group.slug%}">Create Post</a>
+          </h3>
+        </div>
+
+    </div>
+
 
 {% endblock %}

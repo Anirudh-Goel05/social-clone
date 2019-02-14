@@ -80,6 +80,18 @@ class UserPostListView(LoginRequiredMixin,ListView):
         posts = posts.order_by('-created_at')
         return posts
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        total_posts = Post.objects.filter(user=user).count()
+        total_groups = GroupMember.objects.filter(user=user).count()
+        group_names = GroupMember.objects.filter(user=user)
+        context['groups'] = group_names
+        context['user'] = user
+        context['total_posts'] = total_posts
+        context['total_groups'] = total_groups
+        return context
+
 class UserProfileView(LoginRequiredMixin,ListView):
     template_name = 'account/user_profile.html'
     model = Post
@@ -96,6 +108,9 @@ class UserProfileView(LoginRequiredMixin,ListView):
         user = get_object_or_404(User,id=pk)
         total_posts = Post.objects.filter(user=user).count()
         total_groups = GroupMember.objects.filter(user=user).count()
+        group_names = GroupMember.objects.filter(user=user)
+        context['groups'] = group_names
+        print(group_names)
         context['user'] = user
         context['total_posts'] = total_posts
         context['total_groups'] = total_groups

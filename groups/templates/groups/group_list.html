@@ -1,15 +1,22 @@
 {% extends 'groups/group_base.html' %}
 {% block body_block %}
-  <h1>Groups</h1>
-  <ul>
+  <div class="jumbotron text-center">
+    <h1>Groups</h1>
+  </div>
     {% for group in groups %}
-    <li>
-      <h3> <a href="{% url 'group:group_detail' slug=group.slug %}">{{group.name}}</a></h3>
-      <p>{{group.description}}</p>
-      {% if user.is_authenticated %}
-      <a href="{% url 'group:join_group' slug=group.slug %}">Join this group</a>
-      {% endif %}
-    </li>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>
+          <a href="{% url 'group:group_detail' slug=group.slug %}">{{group.name}}</a>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <p>{{group.description}}</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'group:join_group' slug=group.slug %}">Join this group</a>
+        {% endif %}
+      </div>
+    </div>
     {% endfor %}
-  </ul>
+
 {% endblock %}

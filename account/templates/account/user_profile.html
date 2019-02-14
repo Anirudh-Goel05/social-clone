@@ -2,6 +2,13 @@
 {% block body_block %}
   <h1>Welcome to {{user.username}}'s Page</h1>
   <h2>They are a member of {{total_groups}} Groups</h2>
+  {% if groups %}
+    <ol>
+    {% for group in groups %}
+      <li><a href="{% url 'group:group_detail' slug=group.group.slug%}">{{group.group.name}}</a></li>
+    {% endfor %}
+  </ol>
+  {% endif %}
   {% if posts %}
   <h2>Posts Written by them are {{total_posts}}:</h2>
 

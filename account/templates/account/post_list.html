@@ -1,7 +1,16 @@
 {% extends 'account/base.html' %}
 
 {% block body_block %}
-  <h1>Posts in Groups you follow</h1>
+  <h1>You are a member of {{total_groups}} Groups</h1>
+  {% if groups %}
+    <ol>
+    {% for group in groups %}
+      <li><a href="{% url 'group:group_detail' slug=group.group.slug%}">{{group.group.name}}</a></li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+
+<h1>Posts in Groups you follow</h1>
   <ul>
   {% if posts %}
   {% for post in posts %}
