@@ -24,5 +24,6 @@ urlpatterns = [
     path('',views.HomePageView.as_view(),name='home_page'),
     path('account/',include(urls,namespace='account')),
     path('group/',include(groups_urls,namespace='group')),
-
+    path('auth/', include('social_django.urls', namespace='social')),
+    
 ]

@@ -7,7 +7,7 @@
     <a class="close" href="#" data-dismiss="alert">×</a>
       {{ message }}
     </div>
-    
+
   {% endfor %}
   <h1>Sign In !!</h1>
   <form method="post">
@@ -15,5 +15,7 @@
     {{form.as_p}}
     <input type="submit" name="" value="Sign-In">
   </form>
+  <p><strong>-- OR --</strong></p>
+  <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
 
 {% endblock %}
