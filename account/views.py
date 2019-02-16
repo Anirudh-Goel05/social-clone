@@ -138,8 +138,6 @@ def user_self_profile(request):
 def upvote(request,pk):
     post = Post.objects.filter(pk=pk)[0]
     user = request.user
-    print(post)
-    print(user)
     print('.................................................')
     if Upvoter.objects.filter(post=post,user=user).exists():
         Upvoter.objects.filter(post=post,user=user).delete()
@@ -147,12 +145,14 @@ def upvote(request,pk):
         post.save()
         return HttpResponseRedirect(reverse('account:user_posts'))
 
+
     print('Upvoting the post................................')
     upvoter = Upvoter(post=post,user=user)
     upvoter.save()
     post.upvotes += 1
     post.save()
     return HttpResponseRedirect(reverse('account:user_posts'))
+    
 
 @login_required
 def downvote(request,pk):

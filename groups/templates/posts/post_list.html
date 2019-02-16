@@ -13,7 +13,7 @@
         <div class="panel-footer">
           <p><small>Added by: <b>{{post.user.username}}</b></small></p>
           <p><small>Added on: <b>{{post.created_at}}</b></small></p>
-          <p><small>Upvotes:  <b>{{post.upvotes}}</b>   Downvotes: <b>{{post.downvotes}} </b></small></p>
+          <p><a href="{% url 'group:posts_upvote' pk=post.pk slug=post.slug %}">Upvotes:</a> <small> <b>{{post.upvotes}}</b>   Downvotes: <b>{{post.downvotes}} </b></small></p>
         </div>
     </div>
   </div>

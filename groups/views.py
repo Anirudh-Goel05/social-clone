@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from .models import Group,GroupMember,Post
+from .models import Group,GroupMember,Post,Upvoter,Downvoter
 from django.views.generic.edit import CreateView,FormView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,redirect
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
@@ -101,4 +101,44 @@ class PostCreateView(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         Post.objects.create(group=group,user=user,slug=slug,text=self.object.text)
         return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))
 
-    pass    
+    pass
+
+@login_required
+def upvote(request,slug,pk):
+    post = Post.objects.filter(pk=pk)[0]
+    user = request.user
+    # slug = request.slug
+    print(post)
+    print(user)
+    print(slug)
+    print('.................................................')
+    if Upvoter.objects.filter(post=post,user=user).exists():
+        Upvoter.objects.filter(post=post,user=user).delete()
+        post.upvotes -= 1
+        post.save()
+        return HttpResponseRedirect(reverse('group:posts_list',kwargs={'slug':slug}))
+
+    print('Upvoting the post................................')
+    upvoter = Upvoter(post=post,user=user)
+    upvoter.save()
+    post.upvotes += 1
+    post.save()
+    return HttpResponseRedirect(reverse('group:posts_list',kwargs={'slug':slug}))
+
+
+@login_required
+def downvote(request,pk):
+    post = Post.objects.filter(pk=pk)[0]
+    user = request.user
+    if Downvoter.objects.filter(post=post,user=user).exists():
+        Downvoter.objects.filter(post=post,user=user).delete()
+        post.downvotes -= 1
+        post.save()
+        return HttpResponseRedirect(reverse('account:user_posts'))
+
+    print('Downvoting the post................................')
+    downvoter = Downvoter(post=post,user=user)
+    downvoter.save()
+    post.downvotes += 1
+    post.save()
+    return HttpResponseRedirect(reverse('account:user_posts'))
