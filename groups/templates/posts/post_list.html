@@ -1,6 +1,13 @@
 {%  extends 'posts/post_base.html'%}
 
 {% block body_block %}
+    <div class="container">
+      <p class="text-center">
+        <a class="navbar-brand text-center" href="{% url 'group:group_detail' slug=slug%}">{{slug}}</a>
+      </p>
+
+    </div>
+
   <div class="jumbotron text-center">
     <h1>Posts</h1>
   </div>

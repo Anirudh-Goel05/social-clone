@@ -80,6 +80,13 @@ class PostListView(ListView):
         slug = self.kwargs['slug']
         return Post.objects.filter(slug=slug)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cur_group = get_object_or_404(Group, slug=self.kwargs['slug'])
+        context['slug'] =  self.kwargs['slug']
+        return context
+        
+
 class PostCreateView(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     template_name = 'posts/create_post.html'
     model = Post
