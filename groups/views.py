@@ -127,18 +127,18 @@ def upvote(request,slug,pk):
 
 
 @login_required
-def downvote(request,pk):
+def downvote(request,slug,pk):
     post = Post.objects.filter(pk=pk)[0]
     user = request.user
     if Downvoter.objects.filter(post=post,user=user).exists():
         Downvoter.objects.filter(post=post,user=user).delete()
         post.downvotes -= 1
         post.save()
-        return HttpResponseRedirect(reverse('account:user_posts'))
-
+        return HttpResponseRedirect(reverse('group:posts_list',kwargs={'slug':slug}))
+        
     print('Downvoting the post................................')
     downvoter = Downvoter(post=post,user=user)
     downvoter.save()
     post.downvotes += 1
     post.save()
-    return HttpResponseRedirect(reverse('account:user_posts'))
+    return HttpResponseRedirect(reverse('group:posts_list',kwargs={'slug':slug}))

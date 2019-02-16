@@ -13,5 +13,5 @@ urlpatterns = [
     path('<slug:slug>/posts/',PostListView.as_view(),name='posts_list'),
     path('<slug:slug>/post_create/',PostCreateView.as_view(),name='posts_create'),
     path('<slug:slug>/<int:pk>/upvote/',upvote,name='posts_upvote'),
-    path('<int:pk>/downvote/',downvote,name='posts_downvote'),
+    path('<slug:slug>/<int:pk>/downvote/',downvote,name='posts_downvote'),
 ]

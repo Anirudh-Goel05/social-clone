@@ -43,7 +43,7 @@ class Post(models.Model):
     slug = models.SlugField(allow_unicode=True,default='game_of_thrones')
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)
-
+    
     class Meta:
         ordering = ['-created_at']
         unique_together = ('user','text')
@@ -67,6 +67,6 @@ class Downvoter(models.Model):
 
     class Meta:
         unique_together = ('post','user',)
-        
+
     def __str__(self):
         return self.user.username
