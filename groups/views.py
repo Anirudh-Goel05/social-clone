@@ -99,7 +99,7 @@ class PostCreateView(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         group = get_object_or_404(Group, slug=slug)
         user = self.request.user
         Post.objects.create(group=group,user=user,slug=slug,text=self.object.text)
-        return HttpResponseRedirect(reverse('group:group_detail',kwargs={'slug':slug}))
+        return HttpResponseRedirect(reverse('group:posts_list',kwargs={'slug':slug}))
 
     pass
 
@@ -135,7 +135,7 @@ def downvote(request,slug,pk):
         post.downvotes -= 1
         post.save()
         return HttpResponseRedirect(reverse('group:posts_list',kwargs={'slug':slug}))
-        
+
     print('Downvoting the post................................')
     downvoter = Downvoter(post=post,user=user)
     downvoter.save()

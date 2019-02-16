@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+import datetime
+
+
 # Create your models here.
 User = get_user_model()
 
@@ -37,16 +40,27 @@ class GroupMember(models.Model):
 
 class Post(models.Model):
     user = models.ForeignKey(User,related_name='posts',on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField()
     text = models.TextField()
     group = models.ForeignKey(Group,related_name='posts',on_delete=models.CASCADE)
     slug = models.SlugField(allow_unicode=True,default='game_of_thrones')
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)
-    
+
     class Meta:
         ordering = ['-created_at']
         unique_together = ('user','text')
+
+    def save(self, *args, **kwargs):
+        time = self.created_at
+        if time:
+            super(Post, self).save(*args, **kwargs)
+        else:
+            time = datetime.datetime.now()
+            self.created_at = time
+            print(time)
+            print('------------------------------------------')
+            super(Post,self).save(*args,**kwargs)
 
     def __str__(self):
         return self.text
