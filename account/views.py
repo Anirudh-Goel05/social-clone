@@ -30,7 +30,7 @@ class SignUpView(FormView):
     template_name = 'account/profile_create_form.html'
     form_class = UserProfileForm
 
-
+    
     def form_valid(self,form):
         user = form.save(commit=False)
         user.set_password(user.password)
@@ -152,7 +152,7 @@ def upvote(request,pk):
     post.upvotes += 1
     post.save()
     return HttpResponseRedirect(reverse('account:user_posts'))
-    
+
 
 @login_required
 def downvote(request,pk):

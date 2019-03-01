@@ -1,10 +1,16 @@
 {% extends 'account/base.html' %}
-{% block body_block %}
-  <h1>Sign Up !!</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" name="" value="Sign-Up">
-  </form>
+{% load crispy_forms_tags %}
 
+{% block body_block %}
+  <div class="jumbotron container-fluid">
+    <h1>Sign Up !!</h1>
+  </div>
+    <form method="post">
+      {% csrf_token %}
+      
+      {{form|crispy}}
+      <p></p>
+      <button type="submit" class="btn btn-success">Sign Up</button>
+    </form>
+    &nbsp;
 {% endblock %}
