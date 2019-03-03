@@ -1,32 +1,48 @@
 {% extends 'account/base.html' %}
 {% block body_block %}
-  <h1>Welcome to {{user.username}}'s Page</h1>
+  <div class="jumbotron text-center">
+      <h2>Welcome to {{user.username}}'s Page</h2>
+      {% load gravatar %}
 
-  {% load gravatar %}
+        <img class="gravatar img-thumbnail img-fluid" src= https://www.gravatar.com/avatar/{{profile.email_hash}}?s=512&d=identicon&r=PG width="70" height="70" alt="Responsive Image" />
 
-    <img class="gravatar" src= https://www.gravatar.com/avatar/{{profile.email_hash}}?s=128&d=identicon&r=PG width="80" height="80" alt="user@example.com" />
+  </div>
 
-  <h2>They are a member of {{total_groups}} Groups</h2>
-  {% if groups %}
-    <ol>
-    {% for group in groups %}
-      <li><a href="{% url 'group:group_detail' slug=group.group.slug%}">{{group.group.name}}</a></li>
-    {% endfor %}
-  </ol>
-  {% endif %}
-  {% if posts %}
-  <h2>Posts Written by them are {{total_posts}}:</h2>
 
-  <ul>
-  {% for post in posts %}
-  <li>
-    <h3> <a href="{% url 'group:group_detail' slug=post.group.slug %}">{{post.group.name}}</a></h3>
-    <p>{{post.text}}</p>
-    <p><small>Added on:{{post.created_at}}</small></p>
-  </li>
-  {% endfor %}
-  </ul>
-  {% else %}
-  <h2> No Posts by this User </h2>
-  {% endif %}
+
+  <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2>They are a member of {{total_groups}} Groups</h2>
+      </div>
+      {% if groups %}
+        <div class="panel-body">
+          <ol>
+            {% for group in groups %}
+              <li><a href="{% url 'group:group_detail' slug=group.group.slug%}">{{group.group.name}}</a></li>
+            {% endfor %}
+          </ol>
+        </div>
+      {% endif %}
+      {% if posts %}
+  </div>
+  <div class="panel panel-default">
+
+      <div class="panel-heading">
+        <h2>Posts Written by them are {{total_posts}}:</h2>
+      </div>
+
+      {% for post in posts %}
+        <div class="panel-body">
+          <h3> <a href="{% url 'group:group_detail' slug=post.group.slug %}">{{post.group.name}}</a></h3>
+          <p>{{post.text}}</p>
+          <p><small>Added on:{{post.created_at}}</small></p>
+        </div>
+      {% endfor %}
+      {% else %}
+      <div class="panel-body">
+          <h2> No Posts by this User </h2>
+      </div>
+
+      {% endif %}
+  </div>
 {% endblock %}

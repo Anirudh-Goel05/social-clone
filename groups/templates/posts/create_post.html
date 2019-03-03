@@ -1,10 +1,16 @@
 {% extends 'posts/post_base.html' %}
+{% load crispy_forms_tags %}
+
 {% block body_block %}
-  <h1>Create a new post in this Group</h1>
-  <form method="post" name='next'>
+  <div class="jumbotron">
+      <h2>Create a new post in this Group</h2>
+  </div>
+
+  <form method="post">
     {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" name="" value="Add-Post">
+    {{form|crispy}}
+    <p></p>
+    <button type="submit" class="btn btn-primary">Create Post</button>
   </form>
 
 {% endblock %}

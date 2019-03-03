@@ -1,9 +1,15 @@
 {% extends 'groups/group_base.html'  %}
+{% load crispy_forms_tags %}
+
 {% block body_block %}
-  <h2>Are you sure you want to join this group</h2>
+  <div class="jumbotron text-center">
+    <h2>Are you sure you want to join this group?</h2>
+  </div>
   <form method="post">
     {% csrf_token %}
-    <input type="submit" name="" value="Yes">
-    <li><a href="{% url 'group:group_detail' slug=slug %}">Go back</a></li>
+    <input type="submit" class="btn btn-success" value="Yes">
+    <p></p>
+        <a class="btn btn-danger" href="{% url 'group:group_detail' slug=slug %}" role='button'>Go Back</a>
+
   </form>
 {% endblock %}

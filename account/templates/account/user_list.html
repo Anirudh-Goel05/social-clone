@@ -5,7 +5,7 @@
   {% for profile in profiles %}
     <div class="panel-body">
       {% load gravatar %}
-        <img class="gravatar" src= https://www.gravatar.com/avatar/{{profile.email_hash}}?s=128&d=identicon&r=PG width="40" height="40" alt="user@example.com" />
+        <img class="gravatar img-thumbnail" src= https://www.gravatar.com/avatar/{{profile.email_hash}}?s=128&d=identicon&r=PG width="50" height="50" alt="user@example.com" />
 
       <h3><a href="{%  url 'account:user_profile' pk=profile.user.id %}">{{profile.user.username}}</a></h3>
       <h5>Email: {{profile.user.email}}</h5>
