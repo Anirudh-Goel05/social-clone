@@ -1,0 +1,28 @@
+{% extends 'account/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+
+  {% for message in messages %}
+
+    <div class="alert alert-success">
+    <a class="close" href="#" data-dismiss="alert">×</a>
+      {{ message }}
+    </div>
+
+  {% endfor %}
+  <div class="jumbotron container">
+      <h1>Sign In !!</h1>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {{form|crispy}}
+    <p></p>
+    <button type="submit" class="btn btn-success">Sign In</button>
+  </form>
+  <p></p>
+  <p><strong>-- OR --</strong></p>
+  <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
+
+{% endblock %}
