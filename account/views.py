@@ -36,7 +36,13 @@ class SignUpView(FormView):
         user = form.save(commit=False)
         user.set_password(user.password)
         user.save()
-        user_profile = Profile(user=user)
+        email_hash = calculate_gravatar_hash(user.email)
+        user_profile = Profile(user=user,email_hash=email_hash)
+        user_profile.save()
+        # print('***********************')
+        # print(email_hash)
+        # print(user_profile.email_hash)
+        # print('***********************')
         return HttpResponseRedirect(reverse('account:sign_in'))
 
 
@@ -108,25 +114,27 @@ class UserProfileView(LoginRequiredMixin,ListView):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs['pk']
         user = get_object_or_404(User,id=pk)
+        profile = get_object_or_404(Profile,user=user)
         total_posts = Post.objects.filter(user=user).count()
         total_groups = GroupMember.objects.filter(user=user).count()
         group_names = GroupMember.objects.filter(user=user)
 
-        url = get_gravatar_url(user.email, size=150)
-        gravatar_exists = has_gravatar(user.email)
-        profile_url = get_gravatar_profile_url(user.email)
-        email_hash = calculate_gravatar_hash(user.email)
-        print('*************************')
-        print(url)
-        print('*************************')
-        print(profile_url)
-        print('*************************')
-        print(email_hash)
-        print('*************************')
+        # url = get_gravatar_url(user.email, size=150)
+        # gravatar_exists = has_gravatar(user.email)
+        # profile_url = get_gravatar_profile_url(user.email)
+        # email_hash = calculate_gravatar_hash(user.email)
+        # print('*************************')
+        # print(url)
+        # print('*************************')
+        # print(profile_url)
+        # print('*************************')
+        # print(email_hash)
+        # print('*************************')
 
 
-        context['email_hash'] = email_hash
+        # context['email_hash'] = email_hash
         context['groups'] = group_names
+        context['profile'] = profile
         context['user'] = user
         context['total_posts'] = total_posts
         context['total_groups'] = total_groups
@@ -134,14 +142,14 @@ class UserProfileView(LoginRequiredMixin,ListView):
 
 class UserListView(ListView):
     template_name = 'account/user_list.html'
-    model = User
-    context_object_name = 'users'
+    model = Profile
+    context_object_name = 'profiles'
 
     def get_queryset(self):
-        return User.objects.all().order_by('username')
+        return Profile.objects.all().order_by('user')
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
-        total_users = User.objects.count()
+        total_users = Profile.objects.count()
         context['total_users'] = total_users
         return context
 

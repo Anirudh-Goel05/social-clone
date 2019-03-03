@@ -4,10 +4,7 @@
 
   {% load gravatar %}
 
-
-    <!-- {% gravatar user.email 150 %} -->
-    <!-- {% gravatar user.email 150 "user@example.com" %} -->
-    <img class="gravatar" src= https://www.gravatar.com/avatar/{{email_hash}}?s=128&d=identicon&r=PG width="80" height="80" alt="user@example.com" />
+    <img class="gravatar" src= https://www.gravatar.com/avatar/{{profile.email_hash}}?s=128&d=identicon&r=PG width="80" height="80" alt="user@example.com" />
 
   <h2>They are a member of {{total_groups}} Groups</h2>
   {% if groups %}
