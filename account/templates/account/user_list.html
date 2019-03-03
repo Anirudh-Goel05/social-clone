@@ -3,13 +3,13 @@
   <h1>Users active on this website are: {{total_users}} </h1>
   <ul>
   {% for profile in profiles %}
-    <li>
+    <div class="panel-body">
       {% load gravatar %}
         <img class="gravatar" src= https://www.gravatar.com/avatar/{{profile.email_hash}}?s=128&d=identicon&r=PG width="40" height="40" alt="user@example.com" />
 
       <h3><a href="{%  url 'account:user_profile' pk=profile.user.id %}">{{profile.user.username}}</a></h3>
       <h5>Email: {{profile.user.email}}</h5>
-    </li>
+    </div>
   {% endfor %}
   </ul>
 
