@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django_gravatar.helpers import get_gravatar_url, has_gravatar, get_gravatar_profile_url, calculate_gravatar_hash
 
 
 User = get_user_model()
@@ -30,13 +31,14 @@ class SignUpView(FormView):
     template_name = 'account/profile_create_form.html'
     form_class = UserProfileForm
 
-    
+
     def form_valid(self,form):
         user = form.save(commit=False)
         user.set_password(user.password)
         user.save()
         user_profile = Profile(user=user)
         return HttpResponseRedirect(reverse('account:sign_in'))
+
 
 class SignInView(FormView):
     template_name='account/sign_in_form.html'
@@ -109,8 +111,22 @@ class UserProfileView(LoginRequiredMixin,ListView):
         total_posts = Post.objects.filter(user=user).count()
         total_groups = GroupMember.objects.filter(user=user).count()
         group_names = GroupMember.objects.filter(user=user)
+
+        url = get_gravatar_url(user.email, size=150)
+        gravatar_exists = has_gravatar(user.email)
+        profile_url = get_gravatar_profile_url(user.email)
+        email_hash = calculate_gravatar_hash(user.email)
+        print('*************************')
+        print(url)
+        print('*************************')
+        print(profile_url)
+        print('*************************')
+        print(email_hash)
+        print('*************************')
+
+
+        context['email_hash'] = email_hash
         context['groups'] = group_names
-        print(group_names)
         context['user'] = user
         context['total_posts'] = total_posts
         context['total_groups'] = total_groups
